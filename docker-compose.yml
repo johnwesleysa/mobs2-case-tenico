@@ -1,0 +1,64 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: mobs2_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mobs2_user
+      POSTGRES_PASSWORD: mobs2_pass
+      POSTGRES_DB: mobs2_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  laravel:
+    build:
+      context: ./backend-laravel
+      dockerfile: Dockerfile
+    container_name: mobs2_laravel
+    restart: unless-stopped
+    volumes:
+      - ./backend-laravel:/var/www/html
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=mobs2_db
+      - DB_USERNAME=mobs2_user
+      - DB_PASSWORD=mobs2_pass
+
+  nestjs:
+    build:
+      context: ./backend-nestjs
+      dockerfile: Dockerfile
+    container_name: mobs2_nestjs
+    restart: unless-stopped
+    volumes:
+      - ./backend-nestjs:/usr/src/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+
+  vue:
+    build:
+      context: ./frontend-vue
+      dockerfile: Dockerfile
+    container_name: mobs2_vue
+    restart: unless-stopped
+    volumes:
+      - ./frontend-vue:/app
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - VITE_TELEMETRY_URL=http://localhost:3000
+volumes:
+  pgdata:
