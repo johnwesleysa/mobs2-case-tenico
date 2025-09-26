@@ -12,7 +12,7 @@ import { OnModuleInit } from '@nestjs/common';
   },
   namespace: '/telemetry', // Opcional, para organizar os sockets
 })
-export class TelemetryGateway implements OnModuleInit {
+export class TelemetriaGateway implements OnModuleInit {
   @WebSocketServer()
   server: Server;
 
