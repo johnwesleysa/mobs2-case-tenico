@@ -1,0 +1,32 @@
+# Arquivos de Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# Configurações de IDEs
+.vscode/
+.idea/
+
+# --- Laravel (backend-laravel) ---
+backend-laravel/vendor/
+backend-laravel/.env
+backend-laravel/storage/framework/
+backend-laravel/storage/logs/
+backend-laravel/storage/app/public/
+backend-laravel/public/storage
+backend-laravel/bootstrap/cache/
+backend-laravel/.phpunit.result.cache
+
+# --- Node.js (NestJS e Vue) ---
+# Ignora para todas as subpastas
+**/node_modules/
+**/.env
+**/dist/
+**/.npm
+**/pids
+**/logs
+**/results
