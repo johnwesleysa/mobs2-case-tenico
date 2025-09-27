@@ -35,7 +35,7 @@ class VehicleController extends Controller
     public function update(Request $request, $id) {
         $vehicle = Vehicle::findOrFail($id);
         $data = $request->validate([
-            'plate' => 'required|unique:vehicles,plate'.$vehicle->id,
+            'plate' => 'required|unique:vehicles,plate,'.$vehicle->id,
             'model' => 'required',
             'manufacturer' => 'required',
             'year' => 'required|digits:4'

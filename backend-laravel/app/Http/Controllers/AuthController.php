@@ -11,13 +11,13 @@ class AuthController extends Controller
 {
     public function register(Request $request) {
 
-        $data = $request->validade([
+        $data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6'
         ]);
 
-        $user = $User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password'])
@@ -30,13 +30,19 @@ class AuthController extends Controller
             'token' => $token], 201);
     }
 
-    public function login(Request $request) {
-        $credentials = $request -> only ('email','password');
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json([
-                'error' => 'Invalid credentials'], 401);
+        $credentials = $request->only('email', 'password');
+
+        if (! $token = auth('api')->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
+
 
         return response()->json([
             'token' => $token
