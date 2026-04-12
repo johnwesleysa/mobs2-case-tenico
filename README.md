@@ -1,99 +1,165 @@
-# Painel de Veículos MOBS2
+# 🚗 Real-Time Fleet Monitoring Dashboard
 
-## Visão Geral
-Este projeto é uma aplicação full-stack desenvolvida como parte de um case técnico. O objetivo é criar um painel para visualização de veículos de uma frota no mapa, com dados de telemetria e histórico de posições.
+## 📖 Overview
 
-A arquitetura é baseada em microserviços e inclui:
+This project is a **full-stack, microservices-based application** designed for **real-time fleet vehicle monitoring**.
 
-- **Backend 1 (Laravel):** Responsável pelo CRUD de veículos e pela autenticação de usuários via JWT.
-- **Backend 2 (NestJS):** Responsável por simular e fornecer dados de telemetria em tempo real a cada 5 segundos.
-- **Frontend (Vue 3):** Uma Single Page Application (SPA) para login de usuários e visualização do painel com os veículos no Google Maps.
-- **Banco de Dados (PostgreSQL):** Utilizado para a persistência dos dados de usuários e veículos gerenciados pelo Laravel.
-- **Orquestração (Docker):** Todos os serviços são containerizados e gerenciados pelo Docker Compose, garantindo um ambiente de desenvolvimento e execução consistente e de fácil configuração.
+It provides an interactive dashboard to:
+- Track vehicle locations
+- View live telemetry data
+- Analyze historical routes
 
-## Funcionalidades Implementadas
-- ✅ Autenticação de usuários com JWT.
-- ✅ CRUD completo para o cadastro de veículos.
-- ✅ Painel com visualização de múltiplos veículos no Google Maps.
-- ✅ Popup com detalhes do veículo ao clicar em um marcador (Placa, Modelo, Velocidade, Combustível, etc.).
-- ✅ Campo de busca para filtrar veículos por placa no mapa.
-- ✅ Botão para mostrar e ocultar o histórico de posições dos veículos através de polilinhas.
-- ✅ **Diferencial:** Atualização da posição dos veículos em tempo real via WebSocket.
+### 🧩 Architecture
 
-## Pré-requisitos
+The system is fully containerized and composed of:
+
+- **Backend 1 (Laravel)**  
+  Handles JWT authentication and vehicle CRUD operations.
+
+- **Backend 2 (NestJS)**  
+  Simulates and streams real-time telemetry data every 5 seconds.
+
+- **Frontend (Vue 3)**  
+  A reactive SPA with authentication and Google Maps integration.
+
+- **Database (PostgreSQL)**  
+  Stores users and fleet data.
+
+- **Orchestration (Docker)**  
+  Managed via Docker Compose for seamless setup.
+
+---
+
+## ✨ Key Features
+
+- ✅ **Secure Authentication**  
+  JWT-based login and session handling
+
+- ✅ **Fleet Management**  
+  Full CRUD for vehicle management
+
+- ✅ **Interactive Dashboard**  
+  Real-time tracking with Google Maps API
+
+- ✅ **Telemetry Insights**  
+  Detailed vehicle info (plate, model, speed, fuel, etc.)
+
+- ✅ **Quick Search**  
+  Filter vehicles by license plate
+
+- ✅ **Route History**  
+  Toggleable route visualization (polyline)
+
+- 🚀 **Real-Time Updates (Highlight)**  
+  Live updates via WebSockets
+
+---
+
+## 🛠️ Prerequisites
+
 - Docker
 - Docker Compose
 
-## Como Rodar o Projeto
-Siga os passos abaixo para executar a aplicação completa em seu ambiente local.
+---
 
-### 1. Clonar o Repositório
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+
 ```bash
-git clone <URL_DO_SEU_REPOSITORIO_AQUI>
-cd mobs2-case-tenico
+git clone <YOUR_REPOSITORY_URL_HERE>
+cd mobs2-fleet-monitoring
 ```
 
-### 2. Configurar Variáveis de Ambiente
-Antes de iniciar, é necessário configurar as chaves de API e outras variáveis.
+### 2. Configure Environment Variables
 
-**Frontend (Vue.js):**
-Crie o arquivo `frontend-vue/.env` e adicione sua chave da API do Google Maps:
+#### Frontend (Vue)
+
+Create a `.env` file inside `frontend-vue`:
+
 ```bash
-VITE_GOOGLE_MAPS_API_KEY=SUA_CHAVE_DA_API_DO_GOOGLE_MAPS_AQUI
+VITE_GOOGLE_MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY_HERE
 ```
 
-**Backend (Laravel):**
-O arquivo `backend-laravel/.env.example` já serve como base. O `docker-compose.yml` injeta as variáveis do banco de dados automaticamente.
+#### Backend (Laravel)
 
-### 3. Instalar Dependências do Frontend
-O `node_modules` do frontend precisa ser criado para que o editor de código (VS Code) funcione corretamente. Use o Docker para isso, sem precisar instalar Node.js na sua máquina:
+Use the existing `.env.example` file.
+
+---
+
+### 3. Install Frontend Dependencies
+
 ```bash
 docker compose run --rm vue npm install
 ```
 
-### 4. Iniciar a Aplicação com Docker Compose
-Este comando irá construir as imagens e iniciar todos os containers em background.
+---
+
+### 4. Start the Application
+
 ```bash
 docker compose up -d --build
 ```
 
-### 5. Preparar o Banco de Dados do Laravel
-Com os containers rodando, execute as migrações e os "seeders" para criar as tabelas e popular o banco com dados de exemplo.
+---
+
+### 5. Run Migrations & Seeders
+
 ```bash
 docker compose exec laravel php artisan migrate --seed
 ```
 
-### Aplicação Pronta!
-- **Frontend:** [http://localhost:5173](http://localhost:5173)
-- **API Laravel:** [http://localhost:8000](http://localhost:8000)
-- **API NestJS:** [http://localhost:3000](http://localhost:3000)
+---
 
-**Credenciais de Exemplo (criadas pelo seeder):**
-- Email: `test@example.com`
-- Senha: `password`
+## 🎉 Application Ready!
 
-## Como Rodar os Testes Unitários
-Para executar os testes de cada serviço, utilize os seguintes comandos:
+- Frontend: http://localhost:5173  
+- Laravel API: http://localhost:8000  
+- NestJS API: http://localhost:3000  
 
-**Laravel:**
+### Sample Credentials
+
+```
+Email: test@example.com
+Password: password
+```
+
+---
+
+## 🧪 Running Tests
+
+### Laravel
+
 ```bash
 docker compose exec laravel php artisan test
 ```
 
-**NestJS:**
+### NestJS
+
 ```bash
 docker compose exec nestjs npm run test
 ```
 
-## Endpoints da API
-### Laravel (Autenticação e Veículos)
-- `POST /api/register` - Cria um novo usuário.
-- `POST /api/login` - Autentica um usuário e retorna um token JWT.
-- `GET /api/vehicles` - Lista todos os veículos (requer autenticação).
-- `POST /api/vehicles` - Cria um novo veículo (requer autenticação).
-- `PUT /api/vehicles/:id` - Atualiza um veículo existente (requer autenticação).
-- `DELETE /api/vehicles/:id` - Remove um veículo (requer autenticação).
+---
 
-### NestJS (Telemetria)
-- `GET /telemetry/:vehicleId` - Retorna os dados de telemetria mais recentes para um veículo específico.
-- `GET /telemetry/:vehicleId/history` - Retorna o histórico de posições para um veículo.
+## 📡 API Endpoints
+
+### Laravel (Auth & Fleet Management)
+
+| Method | Endpoint           | Description                    |
+|--------|------------------|--------------------------------|
+| POST   | /api/register    | Register a new user           |
+| POST   | /api/login       | Authenticate user (JWT)       |
+| GET    | /api/vehicles    | List vehicles (Auth required) |
+| POST   | /api/vehicles    | Create vehicle (Auth required)|
+| PUT    | /api/vehicles/:id| Update vehicle                |
+| DELETE | /api/vehicles/:id| Delete vehicle                |
+
+---
+
+### NestJS (Telemetry)
+
+| Method | Endpoint                          | Description                    |
+|--------|-----------------------------------|--------------------------------|
+| GET    | /telemetry/:vehicleId            | Latest telemetry data          |
+| GET    | /telemetry/:vehicleId/history    | Vehicle route history          |
